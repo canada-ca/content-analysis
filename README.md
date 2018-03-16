@@ -2,6 +2,8 @@
 
 OpenNorth’s exploration of preprocessing and content analysis of comments from public consultation datasets using Python. These steps are intended to be applied to data in CSV format from public consultations. Note that responses to questions can only be processed one at a time.
 
+generate --> describe --> preprocessing --> analyze
+
 Preprocessing: 
 
 •	Manual formatting: Ensure that the input dataset is in CSV format. Each row in the CSV should reflect an independent data entry and each column should be an associated metadata or attribute field. The first row should contain column headers. 
