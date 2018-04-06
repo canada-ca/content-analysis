@@ -4,6 +4,16 @@ OpenNorth’s exploration of preprocessing and content analysis of comments from
 
 generate --> describe --> preprocessing --> analyze
 
+
+---
+# Analyse du contenu des consultations no (pilote)
+
+Exploration, réalisée par NordOuvert en langage Python, du prétraitement et de l’analyse du contenu des commentaires contenus dans les ensembles de données tirées des consultations publiques. Ces étapes doivent être appliquées en format CSV (valeurs séparées par des virgules) aux données des consultations publiques. Veuillez prendre note que les réponses aux questions de recherche ne peuvent être traitées qu’une seule à la fois.
+
+générer --> décrire --> prétraiter --> analyse
+
+---
+
 Preprocessing: 
 
 •	Manual formatting: Ensure that the input dataset is in CSV format. Each row in the CSV should reflect an independent data entry and each column should be an associated metadata or attribute field. The first row should contain column headers. 
@@ -17,5 +27,4 @@ Preprocessing:
 Analysis: 
 
 In progress
-
 
