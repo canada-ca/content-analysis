@@ -8,7 +8,8 @@ from describe_csv import entry_list
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem import WordNetLemmatizer
 import nltk
-# nltk.download('averaged_perceptron_tagger')
+from nltk.corpus import wordnet
+
 stopWords = set(stopwords.words('english'))
 
 # tokenized list of comments --> 2D list
@@ -24,36 +25,47 @@ for entry in entry_list:
 # do not include the CSV file header in the analysis
 del comments[0]
 
+
 # splits strings into tokens and removes punctuation
 def tokenize():
     tokenizer = RegexpTokenizer(r'\w+')
-    wordsFiltered = [tokenizer.tokenize(i) for i in comments]
-    for i in wordsFiltered:
+    words_filtered = [tokenizer.tokenize(i) for i in comments]
+    for i in words_filtered:
         tokenized.append(i)
     return tokenized
 
-# TO DO: add the POS to lemmatization
-def pos_tag():
-    tagged = []
-    for word in comments:
-        tagged.append(nltk.pos_tag(word))
-    return tagged
 
 # converts to lower case, removes stop words, and converts words to lemma
+# includes POS tagging
 # need to tokenize first!
+# default POS tag is NOUN
 def lemmatize():
+    def get_wordnet_pos(treebank_tag):
+        if treebank_tag.startswith('J'):
+            return wordnet.ADJ
+        elif treebank_tag.startswith('V'):
+            return wordnet.VERB
+        elif treebank_tag.startswith('N'):
+            return wordnet.NOUN
+        elif treebank_tag.startswith('R'):
+            return wordnet.ADV
+        else:
+            return wordnet.NOUN
+
     wordnet_lem = WordNetLemmatizer()
     lemmatized = []
     for i in tokenized:
         t = []
         for word in i:
             if word not in stopWords:
-                t.append(wordnet_lem.lemmatize(word.lower()))
+                if word != "I":
+                    t.append(wordnet_lem.lemmatize(word.lower(), get_wordnet_pos(nltk.pos_tag([word])[0][1])))
         lemmatized.append(t)
     return lemmatized
 
-#c onverts to lower case, removes stop words, and converts words to their stems
-#need to tokenize first!
+
+# converts to lower case, removes stop words, and converts words to their stems
+# need to tokenize first!
 def stemming():
     stemmer = PorterStemmer()
     combine = []
@@ -61,10 +73,11 @@ def stemming():
         t = []
         for word in i:
             if word not in stopWords:
-                if word not in string.punctuation[16]:
+                if word != "I":
                     t.append(stemmer.stem(word.lower()))
         combine.append(t)
     return combine
+
 
 # creates a single list with all the words
 def bag_of_words(data):
@@ -74,10 +87,13 @@ def bag_of_words(data):
             combined.append(word)
     return combined
 
+
 tokenize()
-stemmed = stemming()
 lemmatized = lemmatize()
-bag = bag_of_words(lemmatized)
+stemmed = stemming()
+bag_lem = bag_of_words(lemmatized)
+bag_stem = bag_of_words(stemmed)
+
 
 def testing():
     print(entry_list[4].comment)
@@ -85,5 +101,6 @@ def testing():
     print(tokenized[3])
     print(stemmed[3])
     print(lemmatized[3])
-    print(bag)
-#testing()
+    print(bag_lem)
+    print(bag_stem)
+# testing()
